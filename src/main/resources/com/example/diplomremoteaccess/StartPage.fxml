@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?><?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.diplomremoteaccess.controlller.StartController">
+   <children>
+      <ToolBar prefHeight="60.0" prefWidth="1000.0" style="-fx-background-color: #142632; -fx-border-color: #B7D3E8;" stylesheets="@../../../css/style.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <items>
+          <Button fx:id="BtnStartPage" mnemonicParsing="false" prefHeight="32.0" prefWidth="100.0" style="-fx-background-color: #142632; -fx-border-color: #447596; -fx-border-radius: 20; -fx-border-width: 2;" text="Главная" textFill="#b7d3e8">
+               <font>
+                  <Font name="Times New Roman Bold" size="18.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="BtnSettingsPage" mnemonicParsing="false" prefHeight="32.0" prefWidth="118.0" style="-fx-background-color: #142632; -fx-border-color: #447596; -fx-border-radius: 20; -fx-border-width: 2;" text="Настройки" textFill="#b7d3e8">
+               <font>
+                  <Font name="Times New Roman Bold" size="18.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+        </items>
+      </ToolBar>
+      <Pane fx:id="PaneStartInfo" layoutY="60.0" prefHeight="643.0" prefWidth="210.0" style="-fx-background-color: #203B4C; -fx-border-color: #B7D3E8;" AnchorPane.bottomAnchor="-3.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="60.0">
+         <children>
+            <VBox prefHeight="300.0" prefWidth="210.0">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0" prefWidth="210.0" text="Ваш рабочий стол" textAlignment="JUSTIFY" textFill="#b7d3e8">
+                     <font>
+                        <Font name="Times New Roman Bold" size="22.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="210.0" text="Ваш рабочий стол доступен с этим ID и паролем" textAlignment="JUSTIFY" textFill="#b7d3e8" wrapText="true">
+                     <font>
+                        <Font name="Times New Roman Bold" size="12.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </Label>
+                  <Label alignment="TOP_LEFT" prefHeight="25.0" prefWidth="200.0" style="-fx-border-width: 0 0 0 5; -fx-border-color: #B7D3E8;" text="ID" textFill="#b7d3e8">
+                     <font>
+                        <Font name="Times New Roman Bold" size="12.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets left="5.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TextField fx:id="FieldIdYouPC" editable="false" prefHeight="29.0" prefWidth="210.0" promptText="ID" styleClass="FieldCopy" stylesheets="@../../../css/style.css">
+                     <font>
+                        <Font name="Times New Roman Bold" size="24.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets left="5.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Label alignment="TOP_LEFT" prefHeight="25.0" prefWidth="195.0" style="-fx-border-width: 0 0 0 5; -fx-border-color: #B7D3E8;" text="Олноразовый пароль" textFill="#b7d3e8">
+                     <font>
+                        <Font name="Times New Roman Bold" size="12.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets left="5.0" top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TextField fx:id="FieldTimePasswordPc" editable="false" prefHeight="38.0" prefWidth="192.0" promptText="пароль" styleClass="FieldCopy" stylesheets="@../../../css/style.css">
+                     <font>
+                        <Font name="Times New Roman Bold" size="24.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets left="5.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Button fx:id="BtnUpdatePassword" mnemonicParsing="false" prefHeight="36.0" prefWidth="0.0" style="-fx-border-color: #447596; -fx-background-color: #203B4C; -fx-border-radius: 20; -fx-border-width: 2;" text="↺" textFill="#b7d3e8">
+                     <font>
+                        <Font name="Times New Roman Bold" size="18.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="151.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+      </Pane>
+      <Pane fx:id="PaneConnect" layoutX="216.0" layoutY="60.0" prefHeight="643.0" prefWidth="784.0" style="-fx-background-color: #142632; -fx-border-color: #B7D3E8;" AnchorPane.bottomAnchor="-3.0" AnchorPane.leftAnchor="216.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
+         <children>
+            <Pane layoutX="14.0" layoutY="14.0" prefHeight="145.0" prefWidth="400.0" style="-fx-border-color: #B7D3E8; -fx-border-radius: 15;" stylesheets="@../../../css/style.css">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="30.0" prefHeight="35.0" prefWidth="340.0" text="Управление удалённым рабочим столом" textAlignment="JUSTIFY" textFill="#b7d3e8">
+                     <font>
+                        <Font name="Times New Roman Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <TextField id="IdRemotePC" fx:id="FieldPcForConnect" layoutX="30.0" layoutY="35.0" prefHeight="50.0" prefWidth="340.0" promptText="Введите удалённый ID" styleClass="IdRemotePC" stylesheets="@../../../css/style.css">
+                     <font>
+                        <Font name="Times New Roman Bold" size="18.0" />
+                     </font>
+                  </TextField>
+                  <Button fx:id="BtnConnectPc" layoutX="252.0" layoutY="95.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="118.0" style="-fx-background-color: #447596; -fx-background-radius: 20; -fx-border-color: #447596; -fx-border-radius: 20; -fx-border-width: 2;" text="Подключиться" textFill="#b7d3e8">
+                     <font>
+                        <Font name="Times New Roman Bold" size="14.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button fx:id="BtnConnectPcFile" layoutX="97.0" layoutY="95.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="142.0" style="-fx-background-color: #447596; -fx-background-radius: 20; -fx-border-color: #447596; -fx-border-radius: 20; -fx-border-width: 2;" text="Передача файлов" textFill="#b7d3e8">
+                     <font>
+                        <Font name="Times New Roman Bold" size="14.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+               </children>
+            </Pane>
+            <TabPane layoutX="14.0" layoutY="202.0" prefHeight="533.0" prefWidth="955.0" styleClass="TabPaneStyle" stylesheets="@../../../css/style.css" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab styleClass="BtnTabPane" text="Последнии">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  </content>
+                </Tab>
+                <Tab styleClass="BtnTabPane" text="Избранное">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  </content>
+                </Tab>
+              </tabs>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </TabPane>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

@@ -1,0 +1,25 @@
+.IdRemotePC {
+    -fx-border-color: #B7D3E8;
+    -fx-border-width: 2;
+    -fx-border-radius: 20;
+    -fx-text-fill: #b7d3e8; /* Устанавливает цвет текста */
+    -fx-background-color: #142632;
+}
+
+.FieldCopy {
+    -fx-border-width:  0 0 0 5;
+    -fx-border-color:  #B7D3E8;
+    -fx-text-fill: #b7d3e8; /* Устанавливает цвет текста */
+    -fx-background-color: #203B4C;
+}
+
+.TabPaneStyle{
+    -fx-text-fill: #b7d3e8; /* Устанавливает цвет текста */
+}
+
+.BtnTabPane{
+    -fx-text-fill: #b7d3e8; /* Устанавливает цвет текста */
+    -fx-background-color: #b7d3e8;
+    -fx-end-margin: 5;
+    -fx-start-margin: 5;
+}
