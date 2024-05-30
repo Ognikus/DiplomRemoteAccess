@@ -4,25 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d51f03c6-d375-4945-b100-4481cc2394d8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mvnw" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mvnw.cmd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/StartApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/controlller/StartController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/remote/client/Client.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/remote/server/Server.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/diplomremoteaccess/StartPage.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/css/style.css" afterDir="false" />
+    <list default="true" id="d51f03c6-d375-4945-b100-4481cc2394d8" name="Changes" comment="Server and Client work">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/StartApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/StartApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/controlller/StartController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/controlller/StartController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/remote/client/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/remote/client/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/remote/server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/remote/server/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/diplomremoteaccess/StartPage.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/diplomremoteaccess/StartPage.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,11 +65,11 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices",
+    "settings.editor.selected.configurable": "preferences.keymap",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Application.Client">
+  <component name="RunManager" selected="Application.StartApplication">
     <configuration name="Client" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.example.diplomremoteaccess.remote.client.Client" />
       <module name="DiplomRemoteAccess" />
@@ -123,9 +111,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.StartApplication" />
         <item itemvalue="Application.Client" />
         <item itemvalue="Application.Server" />
-        <item itemvalue="Application.StartApplication" />
       </list>
     </recent_temporary>
   </component>
@@ -154,11 +142,40 @@
       <workItem from="1716776048866" duration="18873000" />
       <workItem from="1716898264761" duration="740000" />
       <workItem from="1716899022419" duration="5641000" />
-      <workItem from="1716991026729" duration="2847000" />
+      <workItem from="1716991026729" duration="5911000" />
+      <workItem from="1717072143362" duration="9996000" />
     </task>
+    <task id="LOCAL-00001" summary="Server and Client work">
+      <option name="closed" value="true" />
+      <created>1716994137773</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1716994137773</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Server and Client work" />
+    <option name="LAST_COMMIT_MESSAGE" value="Server and Client work" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

@@ -1,9 +1,12 @@
 package com.example.diplomremoteaccess.controlller;
 
+import com.example.diplomremoteaccess.remote.client.Client;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.Pane;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
@@ -20,6 +23,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.SecureRandom;
 import java.util.Base64;
+import java.util.Optional;
 import java.util.Properties;
 
 public class StartController {
@@ -31,6 +35,8 @@ public class StartController {
     private static final String IP_KEY = "computerIP";
 
     private WebSocketClient client;
+    private JFrame frame;
+    private JLabel imageLabel;
 
     @FXML
     private Button BtnConnectPc;
@@ -71,6 +77,12 @@ public class StartController {
         }
         FieldTimePasswordPc.setText(oneTimePassword);
 
+        String computerName = loadProperty(NAME_KEY);
+        if (computerName == null || computerName.trim().isEmpty()) {
+            computerName = getComputerName();
+            saveProperty(NAME_KEY, computerName);
+        }
+
         BtnUpdatePassword.setOnAction(event -> updatePassword());
         BtnConnectPc.setOnAction(event -> connectToRemoteComputer());
     }
@@ -98,8 +110,6 @@ public class StartController {
         return formatID(id.toString());
     }
 
-
-
     private String decodeIDToIP(String id) {
         id = id.replaceAll(" ", "");
         StringBuilder ip = new StringBuilder();
@@ -118,9 +128,6 @@ public class StartController {
         }
         return id.substring(0, 3) + " " + id.substring(3, 6) + " " + id.substring(6, 9) + " " + id.substring(9, 12);
     }
-
-
-
 
     private void saveProperty(String key, String value) {
         Properties properties = new Properties();
@@ -179,7 +186,9 @@ public class StartController {
             client = new WebSocketClient(new URI("ws://" + remoteComputerIP + ":8887")) {
                 @Override
                 public void onOpen(ServerHandshake handshakedata) {
-                    System.out.println("Connected to server");
+                    System.out.println("Подключен к серверу");
+                    // Show password prompt
+                    Platform.runLater(() -> showPasswordPrompt());
                 }
 
                 @Override
@@ -188,12 +197,12 @@ public class StartController {
                         byte[] imageBytes = Base64.getDecoder().decode(message);
                         ByteArrayInputStream bais = new ByteArrayInputStream(imageBytes);
                         BufferedImage image = ImageIO.read(bais);
-                        JFrame frame = new JFrame("Remote Desktop");
-                        JLabel imageLabel = new JLabel(new ImageIcon(image));
-                        frame.add(imageLabel);
-                        frame.pack();
-                        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                        frame.setVisible(true);
+
+                        // Update the image in the JFrame
+                        if (frame != null) {
+                            imageLabel.setIcon(new ImageIcon(image));
+                            frame.repaint();
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -201,7 +210,7 @@ public class StartController {
 
                 @Override
                 public void onClose(int code, String reason, boolean remote) {
-                    System.out.println("Disconnected from server");
+                    System.out.println("Отключен от сервера");
                 }
 
                 @Override
@@ -215,19 +224,46 @@ public class StartController {
         }
     }
 
+    private void showPasswordPrompt() {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Введите пароль");
+        dialog.setHeaderText("Введите одноразовый пароль для удаленного доступа:");
+        dialog.setContentText("Пароль:");
+
+        Optional<String> result = dialog.showAndWait();
+        result.ifPresent(password -> {
+            if (validatePassword(password)) {
+                Platform.runLater(() -> startClient(password));
+            } else {
+                showErrorAlert("Неверный пароль", "Введенный пароль неверен. Пожалуйста, попробуйте снова.");
+            }
+        });
+    }
+
+    private boolean validatePassword(String password) {
+        return true; // Validation now happens on the server
+    }
+
+    private void startClient(String password) {
+        try {
+            String remoteComputerId = FieldPcForConnect.getText().replaceAll(" ", "");
+            String remoteComputerIP = decodeIDToIP(remoteComputerId);
+
+            Client client = new Client(new URI("ws://" + remoteComputerIP + ":8887"), password);
+            client.connect();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            showErrorAlert("Ошибка соединения", "Не удалось запустить клиент удаленного рабочего стола.");
+        }
+    }
+
     private void showErrorAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle(title);
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.showAndWait();
+        });
     }
 }
-
-
-
-
-
-
-
-

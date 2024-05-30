@@ -24,7 +24,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="BtnSettingsPage" mnemonicParsing="false" prefHeight="32.0" prefWidth="118.0" style="-fx-background-color: #142632; -fx-border-color: #447596; -fx-border-radius: 20; -fx-border-width: 2;" text="Настройки" textFill="#b7d3e8">
+            <Button fx:id="BtnSettingsPage" visible="false" mnemonicParsing="false" prefHeight="32.0" prefWidth="118.0" style="-fx-background-color: #142632; -fx-border-color: #447596; -fx-border-radius: 20; -fx-border-width: 2;" text="Настройки" textFill="#b7d3e8">
                <font>
                   <Font name="Times New Roman Bold" size="18.0" />
                </font>
