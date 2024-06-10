@@ -42,13 +42,13 @@ public class Server extends WebSocketServer {
     @Override
     public void onOpen(WebSocket conn, ClientHandshake handshake) {
         connections.add(conn);
-        System.out.println("Новое соединение: " + conn.getRemoteSocketAddress());
+        System.out.println("New connection: " + conn.getRemoteSocketAddress());
     }
 
     @Override
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
         connections.remove(conn);
-        System.out.println("Закрытое соединение: " + conn.getRemoteSocketAddress());
+        System.out.println("Closed connection: " + conn.getRemoteSocketAddress());
     }
 
     @Override
@@ -68,8 +68,11 @@ public class Server extends WebSocketServer {
         } else if (message.startsWith("MOUSE_CLICK")) {
             String[] parts = message.split(" ");
             int button = Integer.parseInt(parts[1]);
-            robot.mousePress(InputEvent.getMaskForButton(button));
-            robot.mouseRelease(InputEvent.getMaskForButton(button));
+            int mask = getMouseButtonMask(button);
+            if (mask != 0) {
+                robot.mousePress(mask);
+                robot.mouseRelease(mask);
+            }
         } else if (message.startsWith("KEY_PRESS")) {
             String[] parts = message.split(" ");
             int keyCode = Integer.parseInt(parts[1]);
@@ -90,6 +93,19 @@ public class Server extends WebSocketServer {
         }
     }
 
+    private int getMouseButtonMask(int button) {
+        switch (button) {
+            case 1:
+                return InputEvent.BUTTON1_DOWN_MASK;
+            case 2:
+                return InputEvent.BUTTON2_DOWN_MASK;
+            case 3:
+                return InputEvent.BUTTON3_DOWN_MASK;
+            default:
+                return 0;
+        }
+    }
+
     @Override
     public void onError(WebSocket conn, Exception ex) {
         ex.printStackTrace();
@@ -97,7 +113,7 @@ public class Server extends WebSocketServer {
 
     @Override
     public void onStart() {
-        System.out.println("Сервер запущен!");
+        System.out.println("Server started!");
 
         new Thread(() -> {
             while (true) {
@@ -136,12 +152,12 @@ public class Server extends WebSocketServer {
         String host = loadProperty("computerIP");
         int port = 8887;
         if (host == null || host.trim().isEmpty()) {
-            System.err.println("IP-адрес не найден в файле свойств.");
+            System.err.println("IP address not found in properties file.");
             return;
         }
         Server server = new Server(new InetSocketAddress(host, port));
         server.start();
-        System.out.println("Сервер запущен по IP-адресу: " + host + " и порт: " + port);
+        System.out.println("Server started on IP: " + host + " and port: " + port);
     }
 
     private static String loadProperty(String key) {

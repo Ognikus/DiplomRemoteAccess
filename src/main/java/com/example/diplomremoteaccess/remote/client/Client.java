@@ -1,12 +1,11 @@
 package com.example.diplomremoteaccess.remote.client;
 
-import javafx.application.Platform;
-import javafx.scene.control.Alert;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.net.URI;
@@ -32,17 +31,48 @@ public class Client extends WebSocketClient {
     @Override
     public void onMessage(String message) {
         if (message.equals("PASSWORD_OK")) {
-            Platform.runLater(() -> {
-                frame = new JFrame("Удаленный рабочий стол");
+            SwingUtilities.invokeLater(() -> {
+                frame = new JFrame("Remote Desktop");
                 imageLabel = new JLabel();
                 frame.add(imageLabel);
                 frame.setSize(800, 600);
                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 frame.setVisible(true);
+
+                imageLabel.addMouseMotionListener(new MouseMotionAdapter() {
+                    @Override
+                    public void mouseMoved(MouseEvent e) {
+                        send("MOUSE_MOVE " + e.getX() + " " + e.getY());
+                    }
+
+                    @Override
+                    public void mouseDragged(MouseEvent e) {
+                        send("MOUSE_MOVE " + e.getX() + " " + e.getY());
+                    }
+                });
+
+                imageLabel.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        send("MOUSE_CLICK " + e.getButton());
+                    }
+                });
+
+                frame.addKeyListener(new KeyAdapter() {
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                        send("KEY_PRESS " + e.getKeyCode());
+                    }
+
+                    @Override
+                    public void keyReleased(KeyEvent e) {
+                        send("KEY_RELEASE " + e.getKeyCode());
+                    }
+                });
             });
         } else if (message.equals("PASSWORD_FAIL")) {
-            Platform.runLater(() -> {
-                showErrorAlert("Неверный пароль", "Введенный пароль неверен. Пожалуйста, попробуйте снова.");
+            SwingUtilities.invokeLater(() -> {
+                JOptionPane.showMessageDialog(null, "Invalid Password. Please try again.");
                 close();
             });
         } else {
@@ -61,7 +91,7 @@ public class Client extends WebSocketClient {
 
     @Override
     public void onClose(int code, String reason, boolean remote) {
-        System.out.println("Отключен от сервера");
+        System.out.println("Disconnected from server");
     }
 
     @Override
@@ -75,15 +105,5 @@ public class Client extends WebSocketClient {
         String serverUri = "ws://" + serverIP + ":8887";
         Client client = new Client(new URI(serverUri), password);
         client.connect();
-    }
-
-    private void showErrorAlert(String title, String message) {
-        Platform.runLater(() -> {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle(title);
-            alert.setHeaderText(null);
-            alert.setContentText(message);
-            alert.showAndWait();
-        });
     }
 }

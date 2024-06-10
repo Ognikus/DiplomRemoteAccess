@@ -23,3 +23,35 @@
     -fx-end-margin: 5;
     -fx-start-margin: 5;
 }
+
+/* styles.css */
+.root {
+    -fx-font-family: 'Arial';
+}
+
+.label {
+    -fx-font-size: 14px;
+}
+
+.button {
+    -fx-font-size: 14px;
+    -fx-background-color: #007bff;
+    -fx-text-fill: white;
+    -fx-padding: 10px;
+}
+
+.button:hover {
+    -fx-background-color: #0056b3;
+}
+
+.button:pressed {
+    -fx-background-color: #004080;
+}
+
+.hbox {
+    -fx-padding: 10px;
+}
+
+.vbox {
+    -fx-padding: 10px;
+}

@@ -4,13 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d51f03c6-d375-4945-b100-4481cc2394d8" name="Changes" comment="Server and Client work">
+    <list default="true" id="d51f03c6-d375-4945-b100-4481cc2394d8" name="Changes" comment="Update 30.05">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/controlller/AccessRequestController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/controlller/FileTransferController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/remote/FileTransferApp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/diplomremoteaccess/AccessRequest.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/diplomremoteaccess/FileTransfer.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/StartApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/StartApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/controlller/StartController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/controlller/StartController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/remote/client/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/remote/client/Client.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/remote/server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/remote/server/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/diplomremoteaccess/StartPage.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/diplomremoteaccess/StartPage.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/css/style.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,6 +30,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="CSS File" />
+        <option value="FxmlFile" />
         <option value="Class" />
       </list>
     </option>
@@ -143,7 +150,11 @@
       <workItem from="1716898264761" duration="740000" />
       <workItem from="1716899022419" duration="5641000" />
       <workItem from="1716991026729" duration="5911000" />
-      <workItem from="1717072143362" duration="9996000" />
+      <workItem from="1717072143362" duration="11417000" />
+      <workItem from="1717505931652" duration="1827000" />
+      <workItem from="1717529856293" duration="2771000" />
+      <workItem from="1717677863079" duration="7456000" />
+      <workItem from="1718048476620" duration="2999000" />
     </task>
     <task id="LOCAL-00001" summary="Server and Client work">
       <option name="closed" value="true" />
@@ -153,7 +164,15 @@
       <option name="project" value="LOCAL" />
       <updated>1716994137773</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Update 30.05">
+      <option name="closed" value="true" />
+      <created>1717089228807</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1717089228807</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -172,7 +191,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Server and Client work" />
-    <option name="LAST_COMMIT_MESSAGE" value="Server and Client work" />
+    <MESSAGE value="Update 30.05" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update 30.05" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

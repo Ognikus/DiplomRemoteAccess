@@ -1,18 +1,15 @@
 package com.example.diplomremoteaccess.controlller;
 
-import com.example.diplomremoteaccess.remote.client.Client;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
@@ -52,6 +49,10 @@ public class StartController {
     private TextField FieldPcForConnect;
     @FXML
     private TextField FieldTimePasswordPc;
+    @FXML
+    private ListView<String> localFileList;
+    @FXML
+    private ListView<String> remoteFileList;
     @FXML
     private Pane PaneConnect;
     @FXML
@@ -186,31 +187,75 @@ public class StartController {
             client = new WebSocketClient(new URI("ws://" + remoteComputerIP + ":8887")) {
                 @Override
                 public void onOpen(ServerHandshake handshakedata) {
-                    System.out.println("Подключен к серверу");
+                    System.out.println("Connected to server");
                     // Show password prompt
                     Platform.runLater(() -> showPasswordPrompt());
                 }
 
                 @Override
                 public void onMessage(String message) {
-                    try {
-                        byte[] imageBytes = Base64.getDecoder().decode(message);
-                        ByteArrayInputStream bais = new ByteArrayInputStream(imageBytes);
-                        BufferedImage image = ImageIO.read(bais);
+                    if (message.equals("PASSWORD_OK")) {
+                        Platform.runLater(() -> {
+                            frame = new JFrame("Remote Desktop");
+                            imageLabel = new JLabel();
+                            frame.add(imageLabel);
+                            frame.setSize(800, 600);
+                            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                            frame.setVisible(true);
 
-                        // Update the image in the JFrame
-                        if (frame != null) {
-                            imageLabel.setIcon(new ImageIcon(image));
+                            imageLabel.addMouseMotionListener(new MouseMotionAdapter() {
+                                @Override
+                                public void mouseMoved(MouseEvent e) {
+                                    client.send("MOUSE_MOVE " + e.getX() + " " + e.getY());
+                                }
+
+                                @Override
+                                public void mouseDragged(MouseEvent e) {
+                                    client.send("MOUSE_MOVE " + e.getX() + " " + e.getY());
+                                }
+                            });
+
+                            imageLabel.addMouseListener(new MouseAdapter() {
+                                @Override
+                                public void mousePressed(MouseEvent e) {
+                                    client.send("MOUSE_CLICK " + e.getButton());
+                                }
+                            });
+
+                            frame.addKeyListener(new KeyAdapter() {
+                                @Override
+                                public void keyPressed(KeyEvent e) {
+                                    client.send("KEY_PRESS " + e.getKeyCode());
+                                }
+
+                                @Override
+                                public void keyReleased(KeyEvent e) {
+                                    client.send("KEY_RELEASE " + e.getKeyCode());
+                                }
+                            });
+                        });
+                    } else if (message.equals("PASSWORD_FAIL")) {
+                        Platform.runLater(() -> {
+                            showErrorAlert("Invalid Password", "The password entered is invalid. Please try again.");
+                            client.close();
+                        });
+                    } else {
+                        try {
+                            byte[] imageBytes = Base64.getDecoder().decode(message);
+                            ByteArrayInputStream bais = new ByteArrayInputStream(imageBytes);
+                            BufferedImage image = ImageIO.read(bais);
+                            ImageIcon imageIcon = new ImageIcon(image);
+                            imageLabel.setIcon(imageIcon);
                             frame.repaint();
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onClose(int code, String reason, boolean remote) {
-                    System.out.println("Отключен от сервера");
+                    System.out.println("Disconnected from server");
                 }
 
                 @Override
@@ -226,35 +271,18 @@ public class StartController {
 
     private void showPasswordPrompt() {
         TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Введите пароль");
-        dialog.setHeaderText("Введите одноразовый пароль для удаленного доступа:");
-        dialog.setContentText("Пароль:");
+        dialog.setTitle("Enter Password");
+        dialog.setHeaderText("Enter the one-time password for remote access:");
+        dialog.setContentText("Password:");
 
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(password -> {
-            if (validatePassword(password)) {
-                Platform.runLater(() -> startClient(password));
-            } else {
-                showErrorAlert("Неверный пароль", "Введенный пароль неверен. Пожалуйста, попробуйте снова.");
-            }
+            client.send("PASSWORD " + password);
         });
     }
 
     private boolean validatePassword(String password) {
         return true; // Validation now happens on the server
-    }
-
-    private void startClient(String password) {
-        try {
-            String remoteComputerId = FieldPcForConnect.getText().replaceAll(" ", "");
-            String remoteComputerIP = decodeIDToIP(remoteComputerId);
-
-            Client client = new Client(new URI("ws://" + remoteComputerIP + ":8887"), password);
-            client.connect();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            showErrorAlert("Ошибка соединения", "Не удалось запустить клиент удаленного рабочего стола.");
-        }
     }
 
     private void showErrorAlert(String title, String message) {
