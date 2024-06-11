@@ -1,4 +1,4 @@
-package com.example.diplomremoteaccess.remote;
+package com.example.diplomremoteaccess.remote.client;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
@@ -19,8 +19,8 @@ public class FileTransferClient extends WebSocketClient {
 
     @Override
     public void onOpen(ServerHandshake handshakedata) {
-        System.out.println("Connected to file transfer server");
-        // Show file transfer dialog
+        System.out.println("Подключен к серверу передачи файлов");
+        // Показать диалоговое окно передачи файла
         SwingUtilities.invokeLater(this::showFileTransferDialog);
     }
 
@@ -35,7 +35,7 @@ public class FileTransferClient extends WebSocketClient {
 
     @Override
     public void onClose(int code, String reason, boolean remote) {
-        System.out.println("Disconnected from file transfer server");
+        System.out.println("Отключен от сервера передачи файлов");
     }
 
     @Override
@@ -44,7 +44,7 @@ public class FileTransferClient extends WebSocketClient {
     }
 
     private void showFileTransferDialog() {
-        JFrame frame = new JFrame("File Transfer");
+        JFrame frame = new JFrame("Передача файлов");
         frame.setSize(400, 300);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         JPanel panel = new JPanel();
@@ -56,7 +56,7 @@ public class FileTransferClient extends WebSocketClient {
     private void placeComponents(JPanel panel) {
         panel.setLayout(null);
 
-        JLabel userLabel = new JLabel("Choose File:");
+        JLabel userLabel = new JLabel("Выберите файл:");
         userLabel.setBounds(10, 20, 80, 25);
         panel.add(userLabel);
 
@@ -64,7 +64,7 @@ public class FileTransferClient extends WebSocketClient {
         fileTextField.setBounds(100, 20, 165, 25);
         panel.add(fileTextField);
 
-        JButton chooseFileButton = new JButton("Browse");
+        JButton chooseFileButton = new JButton("Просматривать");
         chooseFileButton.setBounds(270, 20, 80, 25);
         panel.add(chooseFileButton);
 
@@ -77,7 +77,7 @@ public class FileTransferClient extends WebSocketClient {
             }
         });
 
-        JButton sendFileButton = new JButton("Send File");
+        JButton sendFileButton = new JButton("Отправить файл");
         sendFileButton.setBounds(10, 80, 150, 25);
         panel.add(sendFileButton);
 
@@ -104,7 +104,7 @@ public class FileTransferClient extends WebSocketClient {
             FileOutputStream fos = new FileOutputStream(new File("received_" + fileName));
             fos.write(fileContent);
             fos.close();
-            System.out.println("File received: " + fileName);
+            System.out.println("Полученный файл: " + fileName);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,7 +1,7 @@
 package com.example.diplomremoteaccess.controlller;
 
 
-import com.example.diplomremoteaccess.remote.FileTransferClient;
+import com.example.diplomremoteaccess.remote.client.FileTransferClient;
 import com.example.diplomremoteaccess.remote.client.Client;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -199,17 +199,17 @@ public class StartController {
     private void connectToRemoteComputer() {
         String remoteComputerId = FieldPcForConnect.getText().replaceAll(" ", "");
 
-        // Decode the ID to get the IP address
+        // Расшифруйте ID, чтобы получить IP-адрес
         String remoteComputerIP = decodeIDToIP(remoteComputerId);
 
-        System.out.println("Attempting to connect to: " + remoteComputerIP);  // Log for debugging
+        System.out.println("Попытка подключиться к: " + remoteComputerIP);  // Журнал для отладки
 
-        // Initialize WebSocket client
+        // Инициализировать клиент WebSocket
         try {
             client = new WebSocketClient(new URI("ws://" + remoteComputerIP + ":8887")) {
                 @Override
                 public void onOpen(ServerHandshake handshakedata) {
-                    System.out.println("Connected to server");
+                    System.out.println("Подключен к серверу");
                     Platform.runLater(() -> showPasswordPrompt());
                 }
 
@@ -219,7 +219,7 @@ public class StartController {
                         Platform.runLater(() -> startRemoteDesktop());
                     } else if (message.equals("PASSWORD_FAIL")) {
                         Platform.runLater(() -> {
-                            showErrorAlert("Invalid Password", "The password entered is invalid. Please try again.");
+                            showErrorAlert("Неверный пароль", "Введенный пароль неверен. Пожалуйста, попробуйте снова.");
                             client.close();
                         });
                     } else {
@@ -239,7 +239,7 @@ public class StartController {
 
                 @Override
                 public void onClose(int code, String reason, boolean remote) {
-                    System.out.println("Disconnected from server: " + reason);
+                    System.out.println("Отключен от сервера: " + reason);
                 }
 
                 @Override
@@ -248,13 +248,13 @@ public class StartController {
                 }
             };
             client.connect();
-            System.out.println("WebSocket connection initiated.");
+            System.out.println("Инициировано подключение к веб-сокету.");
         } catch (URISyntaxException e) {
             e.printStackTrace();
-            showErrorAlert("Connection Error", "Invalid server address.");
+            showErrorAlert("ошибка соединения", "Неверный адрес сервера.");
         } catch (Exception e) {
             e.printStackTrace();
-            showErrorAlert("Connection Error", "Could not establish connection.");
+            showErrorAlert("ошибка соединения", "Не удалось установить соединение.");
         }
     }
 
@@ -263,10 +263,10 @@ public class StartController {
     private void connectToFileTransfer() {
         String remoteComputerId = FieldPcForConnect.getText().replaceAll(" ", "");
 
-        // Decode the ID to get the IP address
+        // Расшифруйте ID, чтобы получить IP-адрес
         String remoteComputerIP = decodeIDToIP(remoteComputerId);
 
-        // Initialize WebSocket client for file transfer
+        /// Инициализировать клиент WebSocket для передачи файлов
         try {
             WebSocketClient fileTransferClient = new FileTransferClient(new URI("ws://" + remoteComputerIP + ":8888"));
             fileTransferClient.connect();
@@ -292,7 +292,7 @@ public class StartController {
     }
 
     private boolean validatePassword(String password) {
-        return true; // Validation now happens on the server
+        return true; // Проверка теперь происходит на сервере
     }
 
     private void startClient(String password) {
@@ -309,7 +309,7 @@ public class StartController {
     }
 
     private void startRemoteDesktop() {
-        frame = new JFrame("Remote Desktop");
+        frame = new JFrame("даленный рабочий стол");
         imageLabel = new JLabel();
         frame.add(imageLabel);
         frame.setSize(1920, 1080);

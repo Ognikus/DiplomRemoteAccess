@@ -24,7 +24,7 @@ public class Client extends WebSocketClient {
         super(serverUri);
         this.password = password;
 
-        frame = new JFrame("Remote Desktop");
+        frame = new JFrame("Удаленный рабочий стол");
         imageLabel = new JLabel();
         frame.add(imageLabel);
         frame.setSize(1920, 1080);
@@ -65,7 +65,7 @@ public class Client extends WebSocketClient {
 
     @Override
     public void onOpen(ServerHandshake handshakedata) {
-        System.out.println("Connected to server");
+        System.out.println("Подключен к серверу");
         // Send the password immediately after connection
         send("PASSWORD " + password);
     }
@@ -73,9 +73,9 @@ public class Client extends WebSocketClient {
     @Override
     public void onMessage(String message) {
         if (message.equals("PASSWORD_OK")) {
-            System.out.println("Password accepted, starting remote desktop");
+            System.out.println("Пароль принят, запускаем удаленный рабочий стол");
         } else if (message.equals("PASSWORD_FAIL")) {
-            System.out.println("Password rejected, closing connection");
+            System.out.println("Пароль отклонен, соединение закрывается");
             close();
         } else {
             try {
@@ -93,7 +93,7 @@ public class Client extends WebSocketClient {
 
     @Override
     public void onClose(int code, String reason, boolean remote) {
-        System.out.println("Disconnected from server: " + reason);
+        System.out.println("Отключен от сервера: " + reason);
     }
 
     @Override
@@ -107,7 +107,7 @@ public class Client extends WebSocketClient {
             FileOutputStream fos = new FileOutputStream(new File("received_" + fileName));
             fos.write(fileContent);
             fos.close();
-            System.out.println("File received: " + fileName);
+            System.out.println("Полученный файл: " + fileName);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -115,7 +115,7 @@ public class Client extends WebSocketClient {
 
     public static void main(String[] args) throws Exception {
         if (args.length != 2) {
-            System.out.println("Usage: java Client <server_ip> <password>");
+            System.out.println("Использование: java Client <server_ip> <password>");
             return;
         }
         String serverIP = args[0];
@@ -125,3 +125,4 @@ public class Client extends WebSocketClient {
         client.connect();
     }
 }
+

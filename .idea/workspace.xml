@@ -4,12 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d51f03c6-d375-4945-b100-4481cc2394d8" name="Changes" comment="Update new 2">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/remote/FileTransferClient.java" afterDir="false" />
+    <list default="true" id="d51f03c6-d375-4945-b100-4481cc2394d8" name="Changes" comment="Update">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/StartApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/StartApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/controlller/FileTransferController.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/controlller/StartController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/controlller/StartController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/remote/FileTransferClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/remote/client/FileTransferClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/remote/client/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/remote/client/Client.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/remote/server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/remote/server/Server.java" afterDir="false" />
     </list>
@@ -153,7 +152,7 @@
       <workItem from="1717505931652" duration="1827000" />
       <workItem from="1717529856293" duration="2771000" />
       <workItem from="1717677863079" duration="7456000" />
-      <workItem from="1718048476620" duration="12348000" />
+      <workItem from="1718048476620" duration="14141000" />
     </task>
     <task id="LOCAL-00001" summary="Server and Client work">
       <option name="closed" value="true" />
@@ -187,7 +186,15 @@
       <option name="project" value="LOCAL" />
       <updated>1718066650318</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Update">
+      <option name="closed" value="true" />
+      <created>1718099123169</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1718099123169</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -209,7 +216,8 @@
     <MESSAGE value="Update 30.05" />
     <MESSAGE value="Update new 1" />
     <MESSAGE value="Update new 2" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update new 2" />
+    <MESSAGE value="Update" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

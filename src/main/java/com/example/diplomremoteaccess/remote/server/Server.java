@@ -45,7 +45,7 @@ public class Server extends WebSocketServer {
 
     @Override
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
-        System.out.println("Closed connection: " + conn.getRemoteSocketAddress() + " with exit code " + code + " additional info: " + reason);
+        System.out.println("Закрытое соединение: " + conn.getRemoteSocketAddress() + " с кодом выхода " + code + " дополнительная информация: " + reason);
     }
 
     @Override
@@ -90,6 +90,16 @@ public class Server extends WebSocketServer {
         }
     }
 
+    private void receiveFile(String fileName, String fileContent) {
+        try {
+            byte[] fileData = Base64.getDecoder().decode(fileContent);
+            Files.write(new File("received_" + fileName).toPath(), fileData);
+            System.out.println("Полученный файл: " + fileName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void onError(WebSocket conn, Exception ex) {
         ex.printStackTrace();
@@ -97,7 +107,7 @@ public class Server extends WebSocketServer {
 
     @Override
     public void onStart() {
-        System.out.println("Server started successfully");
+        System.out.println("Сервер успешно запущен");
     }
 
     private void startScreenCapture(WebSocket conn) {
@@ -118,15 +128,6 @@ public class Server extends WebSocketServer {
         }).start();
     }
 
-    private void receiveFile(String fileName, String fileContent) {
-        try {
-            byte[] fileData = Base64.getDecoder().decode(fileContent);
-            Files.write(new File("received_" + fileName).toPath(), fileData);
-            System.out.println("File received: " + fileName);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     private boolean validatePassword(String password) {
         Properties properties = new Properties();
@@ -141,12 +142,12 @@ public class Server extends WebSocketServer {
     }
 
     private void showConnectionRequestDialog(WebSocket conn) {
-        JFrame dialog = new JFrame("Connection Request");
+        JFrame dialog = new JFrame("Запрос на подключение");
         dialog.setSize(300, 200);
         dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         dialog.setLayout(new BorderLayout());
 
-        JLabel label = new JLabel("Connection request from: " + conn.getRemoteSocketAddress().getAddress());
+        JLabel label = new JLabel("Запрос на подключение от: " + conn.getRemoteSocketAddress().getAddress());
         dialog.add(label, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel();
@@ -174,9 +175,9 @@ public class Server extends WebSocketServer {
         dialog.setVisible(true);
     }
 
-    private String loadProperty(String key) {
+    private static String loadProperty(String key) {
         Properties properties = new Properties();
-        try (FileInputStream in = new FileInputStream(PROPERTIES_FILE)) {
+        try (FileInputStream in = new FileInputStream("computer_data.properties")) {
             properties.load(in);
             return properties.getProperty(key);
         } catch (IOException e) {
@@ -185,10 +186,22 @@ public class Server extends WebSocketServer {
         }
     }
 
-    public static void main(String[] args) {
-        InetSocketAddress address = new InetSocketAddress("0.0.0.0", 8887); // Bind to all available network interfaces
-        Server server = new Server(address);
+
+    public static void main(String[] args) throws Exception {
+        String host = loadProperty("computerPublicIP");
+//        if (host == null || host.isEmpty()) {
+//            host = getComputerIP(); // Использовать локальный IP, если публичный IP не доступен
+//        }
+
+        int port = 8887;
+        Server server = new Server(new InetSocketAddress(host, port));
         server.start();
-        System.out.println("Server started on: " + address);
+        System.out.println("Сервер запущен: " + host + ":" + port);
+
+        // File transfer server
+        Server fileTransferServer = new Server(new InetSocketAddress(host, 8888));
+        fileTransferServer.start();
+        System.out.println("Сервер передачи файлов запущен на: " + host + ":8888");
     }
+
 }

@@ -21,10 +21,10 @@ public class StartApplication extends Application {
         // Start the server
         new Thread(() -> {
             try {
-                InetSocketAddress address = new InetSocketAddress("0.0.0.0", 8887); // Bind to all available network interfaces
+                InetSocketAddress address = new InetSocketAddress("0.0.0.0", 8887); // Привязка ко всем доступным сетевым интерфейсам
                 Server server = new Server(address);
                 server.start();
-                System.out.println("Server started on: " + address);
+                System.out.println("ервер запущен на: " + address);
             } catch (Exception e) {
                 e.printStackTrace();
             }
