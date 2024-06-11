@@ -7,6 +7,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.net.InetSocketAddress;
+
 public class StartApplication extends Application {
 
     @Override
@@ -16,10 +18,13 @@ public class StartApplication extends Application {
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
 
-        // Start server
+        // Start the server
         new Thread(() -> {
             try {
-                Server.main(null);
+                InetSocketAddress address = new InetSocketAddress("0.0.0.0", 8887); // Bind to all available network interfaces
+                Server server = new Server(address);
+                server.start();
+                System.out.println("Server started on: " + address);
             } catch (Exception e) {
                 e.printStackTrace();
             }

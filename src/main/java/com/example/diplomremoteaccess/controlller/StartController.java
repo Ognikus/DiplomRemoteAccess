@@ -1,6 +1,8 @@
 package com.example.diplomremoteaccess.controlller;
 
 
+import com.example.diplomremoteaccess.remote.FileTransferClient;
+import com.example.diplomremoteaccess.remote.client.Client;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -34,6 +36,8 @@ public class StartController {
 
     @FXML
     private Button BtnConnectPc;
+    @FXML
+    private Button BtnConnectPcFile;
     @FXML
     private Button BtnSettingsPage;
     @FXML
@@ -85,6 +89,7 @@ public class StartController {
 
         BtnUpdatePassword.setOnAction(event -> updatePassword());
         BtnConnectPc.setOnAction(event -> connectToRemoteComputer());
+        BtnConnectPcFile.setOnAction(event -> connectToFileTransfer());
     }
 
     private String getComputerName() {
@@ -197,58 +202,21 @@ public class StartController {
         // Decode the ID to get the IP address
         String remoteComputerIP = decodeIDToIP(remoteComputerId);
 
+        System.out.println("Attempting to connect to: " + remoteComputerIP);  // Log for debugging
+
         // Initialize WebSocket client
         try {
             client = new WebSocketClient(new URI("ws://" + remoteComputerIP + ":8887")) {
                 @Override
                 public void onOpen(ServerHandshake handshakedata) {
                     System.out.println("Connected to server");
-                    // Show password prompt
                     Platform.runLater(() -> showPasswordPrompt());
                 }
 
                 @Override
                 public void onMessage(String message) {
                     if (message.equals("PASSWORD_OK")) {
-                        Platform.runLater(() -> {
-                            frame = new JFrame("Remote Desktop");
-                            imageLabel = new JLabel();
-                            frame.add(imageLabel);
-                            frame.setSize(800, 600);
-                            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                            frame.setVisible(true);
-
-                            imageLabel.addMouseMotionListener(new MouseMotionAdapter() {
-                                @Override
-                                public void mouseMoved(MouseEvent e) {
-                                    client.send("MOUSE_MOVE " + e.getX() + " " + e.getY());
-                                }
-
-                                @Override
-                                public void mouseDragged(MouseEvent e) {
-                                    client.send("MOUSE_MOVE " + e.getX() + " " + e.getY());
-                                }
-                            });
-
-                            imageLabel.addMouseListener(new MouseAdapter() {
-                                @Override
-                                public void mousePressed(MouseEvent e) {
-                                    client.send("MOUSE_CLICK " + e.getButton());
-                                }
-                            });
-
-                            frame.addKeyListener(new KeyAdapter() {
-                                @Override
-                                public void keyPressed(KeyEvent e) {
-                                    client.send("KEY_PRESS " + e.getKeyCode());
-                                }
-
-                                @Override
-                                public void keyReleased(KeyEvent e) {
-                                    client.send("KEY_RELEASE " + e.getKeyCode());
-                                }
-                            });
-                        });
+                        Platform.runLater(() -> startRemoteDesktop());
                     } else if (message.equals("PASSWORD_FAIL")) {
                         Platform.runLater(() -> {
                             showErrorAlert("Invalid Password", "The password entered is invalid. Please try again.");
@@ -259,9 +227,10 @@ public class StartController {
                             byte[] imageBytes = Base64.getDecoder().decode(message);
                             ByteArrayInputStream bais = new ByteArrayInputStream(imageBytes);
                             BufferedImage image = ImageIO.read(bais);
-                            ImageIcon imageIcon = new ImageIcon(image);
-                            imageLabel.setIcon(imageIcon);
-                            frame.repaint();
+                            if (frame != null) {
+                                imageLabel.setIcon(new ImageIcon(image));
+                                frame.repaint();
+                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -270,7 +239,7 @@ public class StartController {
 
                 @Override
                 public void onClose(int code, String reason, boolean remote) {
-                    System.out.println("Disconnected from server");
+                    System.out.println("Disconnected from server: " + reason);
                 }
 
                 @Override
@@ -279,6 +248,28 @@ public class StartController {
                 }
             };
             client.connect();
+            System.out.println("WebSocket connection initiated.");
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            showErrorAlert("Connection Error", "Invalid server address.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            showErrorAlert("Connection Error", "Could not establish connection.");
+        }
+    }
+
+
+    @FXML
+    private void connectToFileTransfer() {
+        String remoteComputerId = FieldPcForConnect.getText().replaceAll(" ", "");
+
+        // Decode the ID to get the IP address
+        String remoteComputerIP = decodeIDToIP(remoteComputerId);
+
+        // Initialize WebSocket client for file transfer
+        try {
+            WebSocketClient fileTransferClient = new FileTransferClient(new URI("ws://" + remoteComputerIP + ":8888"));
+            fileTransferClient.connect();
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -286,13 +277,74 @@ public class StartController {
 
     private void showPasswordPrompt() {
         TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Enter Password");
-        dialog.setHeaderText("Enter the one-time password for remote access:");
-        dialog.setContentText("Password:");
+        dialog.setTitle("Введите пароль");
+        dialog.setHeaderText("Введите одноразовый пароль для удаленного доступа:");
+        dialog.setContentText("Пароль:");
 
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(password -> {
-            client.send("PASSWORD " + password);
+            if (validatePassword(password)) {
+                Platform.runLater(() -> startClient(password));
+            } else {
+                showErrorAlert("Неверный пароль", "Введенный пароль неверен. Пожалуйста, попробуйте снова.");
+            }
+        });
+    }
+
+    private boolean validatePassword(String password) {
+        return true; // Validation now happens on the server
+    }
+
+    private void startClient(String password) {
+        try {
+            String remoteComputerId = FieldPcForConnect.getText().replaceAll(" ", "");
+            String remoteComputerIP = decodeIDToIP(remoteComputerId);
+
+            Client client = new Client(new URI("ws://" + remoteComputerIP + ":8887"), password);
+            client.connect();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            showErrorAlert("Ошибка соединения", "Не удалось запустить клиент удаленного рабочего стола.");
+        }
+    }
+
+    private void startRemoteDesktop() {
+        frame = new JFrame("Remote Desktop");
+        imageLabel = new JLabel();
+        frame.add(imageLabel);
+        frame.setSize(1920, 1080);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setVisible(true);
+
+        imageLabel.addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                client.send("MOUSE_MOVE " + e.getX() + " " + e.getY());
+            }
+
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                client.send("MOUSE_MOVE " + e.getX() + " " + e.getY());
+            }
+        });
+
+        imageLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                client.send("MOUSE_CLICK " + e.getButton());
+            }
+        });
+
+        frame.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                client.send("KEY_PRESS " + e.getKeyCode());
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                client.send("KEY_RELEASE " + e.getKeyCode());
+            }
         });
     }
 
