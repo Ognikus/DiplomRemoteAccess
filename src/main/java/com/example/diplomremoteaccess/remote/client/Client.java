@@ -35,7 +35,7 @@ public class Client extends WebSocketClient {
                 frame = new JFrame("Remote Desktop");
                 imageLabel = new JLabel();
                 frame.add(imageLabel);
-                frame.setSize(800, 600);
+                frame.setSize(1920, 1080);
                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 frame.setVisible(true);
 

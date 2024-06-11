@@ -1,5 +1,6 @@
 package com.example.diplomremoteaccess.controlller;
 
+
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -11,25 +12,21 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.io.*;
+import java.net.*;
 import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Optional;
 import java.util.Properties;
 
 public class StartController {
-
     private static final String PROPERTIES_FILE = "computer_data.properties";
     private static final String ID_KEY = "computerId";
     private static final String PASSWORD_KEY = "oneTimePassword";
     private static final String NAME_KEY = "computerName";
     private static final String IP_KEY = "computerIP";
+    private static final String IP_PUBLIC_KEY = "computerPublicIP";
+
 
     private WebSocketClient client;
     private JFrame frame;
@@ -62,11 +59,13 @@ public class StartController {
     public void initialize() {
         String computerId = loadProperty(ID_KEY);
         if (computerId == null || computerId.trim().isEmpty()) {
+            String computerPublicIP = getPublicIP();
             String computerIP = getComputerIP();
             if (!"Unknown".equals(computerIP)) {
                 computerId = encodeIPToID(computerIP);
                 saveProperty(ID_KEY, computerId);
                 saveProperty(IP_KEY, computerIP);
+                saveProperty(IP_PUBLIC_KEY, computerPublicIP);
             }
         }
         FieldIdYouPC.setText(computerId);
@@ -99,6 +98,22 @@ public class StartController {
             e.printStackTrace();
             return "Unknown";
         }
+    }
+
+    private String getPublicIP() {
+        String publicIP = "Unknown";
+        try {
+            URL url = new URL("https://api.ipify.org");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                publicIP = in.readLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return publicIP;
     }
 
     private String encodeIPToID(String ip) {
@@ -279,10 +294,6 @@ public class StartController {
         result.ifPresent(password -> {
             client.send("PASSWORD " + password);
         });
-    }
-
-    private boolean validatePassword(String password) {
-        return true; // Validation now happens on the server
     }
 
     private void showErrorAlert(String title, String message) {
