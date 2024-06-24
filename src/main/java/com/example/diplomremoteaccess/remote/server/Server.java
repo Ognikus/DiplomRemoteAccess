@@ -88,6 +88,17 @@ public class Server extends WebSocketServer {
             int keyCode = Integer.parseInt(message.split(" ")[1]);
             robot.keyRelease(keyCode);
         }
+        if (message.startsWith("FILE ")) {
+            String[] parts = message.split(" ", 3);
+            String fileName = parts[1];
+            String fileContent = parts[2];
+            saveFile(fileName, fileContent);
+        } else if (message.startsWith("REQUEST_FILE ")) {
+            String fileName = message.split(" ", 2)[1];
+            sendFile(conn, fileName);
+        } else if (message.equals("LIST_FILES")) {
+            sendFileList(conn);
+        }
     }
 
     private void receiveFile(String fileName, String fileContent) {
@@ -175,6 +186,47 @@ public class Server extends WebSocketServer {
         dialog.setVisible(true);
     }
 
+    //------------------------Отправка и получение файлов---------------------------------
+    private void saveFile(String fileName, String fileContent) {
+        try {
+            byte[] fileData = Base64.getDecoder().decode(fileContent);
+            File file = new File(fileName);
+            Files.write(file.toPath(), fileData);
+            System.out.println("Сохранённый файл: " + fileName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void sendFile(WebSocket conn, String fileName) {
+        File file = new File(fileName);
+        if (file.exists()) {
+            try {
+                byte[] fileContent = Files.readAllBytes(file.toPath());
+                String base64File = Base64.getEncoder().encodeToString(fileContent);
+                conn.send("FILE " + file.getName() + " " + base64File);
+                System.out.println("Отправленный файл: " + fileName);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Запрошенный файл не найден: " + fileName);
+        }
+    }
+
+    private void sendFileList(WebSocket conn) {
+        File currentDir = new File(".");
+        File[] files = currentDir.listFiles();
+        if (files != null) {
+            StringBuilder fileList = new StringBuilder();
+            for (File file : files) {
+                fileList.append(file.getName()).append(";");
+            }
+            conn.send("FILE_LIST " + fileList.toString());
+        }
+    }
+    //---------------------------------------------------------------------------------------
+
     private static String loadProperty(String key) {
         Properties properties = new Properties();
         try (FileInputStream in = new FileInputStream("computer_data.properties")) {
@@ -193,7 +245,7 @@ public class Server extends WebSocketServer {
 //            host = getComputerIP(); // Использовать локальный IP, если публичный IP не доступен
 //        }
 
-        int port = 8887;
+        int port = 8888;
         Server server = new Server(new InetSocketAddress(host, port));
         server.start();
         System.out.println("Сервер запущен: " + host + ":" + port);

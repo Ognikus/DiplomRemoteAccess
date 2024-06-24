@@ -1,12 +1,15 @@
 package com.example.diplomremoteaccess.controlller;
 
 
-import com.example.diplomremoteaccess.remote.client.FileTransferClient;
 import com.example.diplomremoteaccess.remote.client.Client;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
@@ -21,6 +24,7 @@ import java.util.Base64;
 import java.util.Optional;
 import java.util.Properties;
 
+
 public class StartController {
     private static final String PROPERTIES_FILE = "computer_data.properties";
     private static final String ID_KEY = "computerId";
@@ -28,6 +32,7 @@ public class StartController {
     private static final String NAME_KEY = "computerName";
     private static final String IP_KEY = "computerIP";
     private static final String IP_PUBLIC_KEY = "computerPublicIP";
+    private static final String OS_KEY = "operatingSystem";
 
 
     private WebSocketClient client;
@@ -86,6 +91,11 @@ public class StartController {
             computerName = getComputerName();
             saveProperty(NAME_KEY, computerName);
         }
+        String operatingSystem = loadProperty(OS_KEY);
+        if (operatingSystem == null || operatingSystem.trim().isEmpty()) {
+            operatingSystem = getOperatingSystem();
+            saveProperty(OS_KEY, operatingSystem);
+        }
 
         BtnUpdatePassword.setOnAction(event -> updatePassword());
         BtnConnectPc.setOnAction(event -> connectToRemoteComputer());
@@ -95,6 +105,8 @@ public class StartController {
     private String getComputerName() {
         return System.getProperty("user.name");
     }
+
+    private String getOperatingSystem() {return System.getProperty("os.name");}
 
     private String getComputerIP() {
         try {
@@ -263,17 +275,33 @@ public class StartController {
     private void connectToFileTransfer() {
         String remoteComputerId = FieldPcForConnect.getText().replaceAll(" ", "");
 
-        // Расшифруйте ID, чтобы получить IP-адрес
+        // Декодирование ID для получения IP-адреса
         String remoteComputerIP = decodeIDToIP(remoteComputerId);
 
-        /// Инициализировать клиент WebSocket для передачи файлов
+        // Инициализация WebSocket клиента для передачи файлов
         try {
-            WebSocketClient fileTransferClient = new FileTransferClient(new URI("ws://" + remoteComputerIP + ":8888"));
-            fileTransferClient.connect();
-        } catch (URISyntaxException e) {
+            Stage fileTransferStage = new Stage();
+            URI serverUri = new URI("ws://" + remoteComputerIP + ":8888");
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/diplomremoteaccess/FileTransfer.fxml"));
+            Parent root = loader.load();
+
+            // Получаем контроллер после загрузки FXML
+            FileTransferController fileTransferController = loader.getController();
+            fileTransferController.setServerUri(serverUri);
+            fileTransferController.setStage(fileTransferStage);
+
+            Scene scene = new Scene(root);
+            fileTransferStage.setScene(scene);
+            fileTransferStage.setTitle("Передача файлов");
+            fileTransferStage.show();
+
+            fileTransferController.connect();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
     private void showPasswordPrompt() {
         TextInputDialog dialog = new TextInputDialog();
@@ -300,7 +328,7 @@ public class StartController {
             String remoteComputerId = FieldPcForConnect.getText().replaceAll(" ", "");
             String remoteComputerIP = decodeIDToIP(remoteComputerId);
 
-            Client client = new Client(new URI("ws://" + remoteComputerIP + ":8887"), password);
+            Client client = new Client(new URI("ws://" + remoteComputerIP + ":8888"), password);
             client.connect();
         } catch (URISyntaxException e) {
             e.printStackTrace();
@@ -309,7 +337,7 @@ public class StartController {
     }
 
     private void startRemoteDesktop() {
-        frame = new JFrame("даленный рабочий стол");
+        frame = new JFrame("удаленный рабочий стол");
         imageLabel = new JLabel();
         frame.add(imageLabel);
         frame.setSize(1920, 1080);

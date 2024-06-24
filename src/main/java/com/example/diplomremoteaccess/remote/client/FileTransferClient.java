@@ -9,6 +9,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Base64;
 
 public class FileTransferClient extends WebSocketClient {
@@ -27,9 +29,10 @@ public class FileTransferClient extends WebSocketClient {
     @Override
     public void onMessage(String message) {
         if (message.startsWith("FILE ")) {
-            String[] parts = message.split(" ", 2);
+            String[] parts = message.split(" ", 3);
             String fileName = parts[1];
-            receiveFile(fileName);
+            String fileContent = parts[2];
+            receiveFile(fileName, fileContent);
         }
     }
 
@@ -98,13 +101,18 @@ public class FileTransferClient extends WebSocketClient {
         }
     }
 
-    private void receiveFile(String fileName) {
+    private void receiveFile(String fileName, String fileContent) {
         try {
-            byte[] fileContent = Base64.getDecoder().decode(fileName);
-            FileOutputStream fos = new FileOutputStream(new File("received_" + fileName));
-            fos.write(fileContent);
-            fos.close();
-            System.out.println("Полученный файл: " + fileName);
+            byte[] fileData = Base64.getDecoder().decode(fileContent);
+            Path downloadsDir = Paths.get(System.getProperty("user.home"), "Downloads");
+            if (!Files.exists(downloadsDir)) {
+                Files.createDirectories(downloadsDir);
+            }
+            File outputFile = new File(downloadsDir.toFile(), fileName);
+            try (FileOutputStream fos = new FileOutputStream(outputFile)) {
+                fos.write(fileData);
+                System.out.println("Файл получен и сохранен: " + outputFile.getAbsolutePath());
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

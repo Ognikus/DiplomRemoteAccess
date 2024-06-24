@@ -120,7 +120,7 @@ public class Client extends WebSocketClient {
         }
         String serverIP = args[0];
         String password = args[1];
-        String serverUri = "ws://" + serverIP + ":8887";
+        String serverUri = "ws://" + serverIP + ":8888";
         Client client = new Client(new URI(serverUri), password);
         client.connect();
     }
