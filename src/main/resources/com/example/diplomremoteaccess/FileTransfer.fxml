@@ -15,7 +15,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="635.0" prefWidth="900.0" style="-fx-background-color: #142632;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.diplomremoteaccess.controlller.FileTransferController">
    <children>
-      <VBox layoutX="15.0" layoutY="14.0" prefHeight="110.0" prefWidth="290.0">
+      <VBox layoutX="15.0" layoutY="14.0" prefHeight="110.0" prefWidth="290.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="14.0">
          <children>
           <Button fx:id="BtnOpenLocalFolder" style="-fx-background-color: #b7d3e8; -fx-background-radius: 10;" text="Выбрать папку на локальном ПК">
                <VBox.margin>
@@ -44,7 +44,7 @@
             <Insets bottom="5.0" right="5.0" top="5.0" />
          </padding>
       </VBox>
-       <GridPane layoutX="15.0" layoutY="104.0" prefHeight="470.0" prefWidth="870.0">
+       <GridPane layoutX="15.0" layoutY="104.0" prefHeight="470.0" prefWidth="870.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="104.0">
            <columnConstraints>
                <ColumnConstraints hgrow="ALWAYS" />
                <ColumnConstraints hgrow="ALWAYS" />
@@ -76,7 +76,7 @@
                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </GridPane.margin></ListView>
        </GridPane>
-      <HBox layoutX="14.0" layoutY="574.0" prefHeight="65.0" prefWidth="173.0">
+      <HBox layoutX="14.0" layoutY="574.0" prefHeight="65.0" prefWidth="173.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="574.0">
          <children>
           <Button fx:id="BtnSendFile" style="-fx-background-color: #b7d3e8; -fx-background-radius: 10;" text="Отправить файл">
                <HBox.margin>
@@ -94,7 +94,7 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </HBox>
-      <HBox layoutX="450.0" layoutY="574.0" prefHeight="65.0" prefWidth="173.0">
+      <HBox layoutX="450.0" layoutY="574.0" prefHeight="65.0" prefWidth="173.0" AnchorPane.rightAnchor="277.0" AnchorPane.topAnchor="574.0">
          <children>
             <Button fx:id="BtnReceiveFile" style="-fx-background-color: #b7d3e8; -fx-background-radius: 10;" text="Получить файл">
                <HBox.margin>
@@ -112,7 +112,7 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </HBox>
-      <VBox layoutX="450.0" layoutY="14.0" prefHeight="110.0" prefWidth="290.0">
+      <VBox layoutX="450.0" layoutY="14.0" prefHeight="110.0" prefWidth="290.0" AnchorPane.rightAnchor="160.0" AnchorPane.topAnchor="14.0">
          <children>
             <Button fx:id="BtnOpenRemoteFolder" prefHeight="35.0" prefWidth="274.0" style="-fx-background-color: #b7d3e8; -fx-background-radius: 10;" text="Выбрать папку на удалённом ПК">
                <VBox.margin>

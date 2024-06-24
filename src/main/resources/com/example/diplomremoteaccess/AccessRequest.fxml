@@ -92,8 +92,8 @@
     </center>
     <bottom>
         <HBox alignment="CENTER" prefHeight="108.0" prefWidth="390.0" spacing="10" style="-fx-padding: 10px;">
-            <Button onAction="#handleAccept" text="Принять"/>
-            <Button onAction="#handleCancel" text="Отключить"/>
+            <Button fx:id="BtnAccept" text="Принять"/>
+            <Button fx:id="BtnCancel" text="Отключить"/>
         </HBox>
     </bottom>
 </BorderPane>

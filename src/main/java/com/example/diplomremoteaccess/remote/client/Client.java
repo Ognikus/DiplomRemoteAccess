@@ -8,9 +8,6 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.net.URI;
 import java.util.Base64;
 
@@ -18,16 +15,18 @@ public class Client extends WebSocketClient {
 
     private JFrame frame;
     private JLabel imageLabel;
+    private JPanel imagePanel;
     private String password;
 
     public Client(URI serverUri, String password) {
         super(serverUri);
         this.password = password;
 
-        frame = new JFrame("Удаленный рабочий стол");
+
+        frame = new JFrame("Удалённый рабочий стол");
         imageLabel = new JLabel();
-        frame.add(imageLabel);
-        frame.setSize(1920, 1080);
+        frame.add(new JScrollPane(imageLabel));  // Используем JScrollPane для поддержки прокрутки
+        frame.setSize(1920, 1080);  // Устанавливаем размер окна
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setVisible(true);
 
@@ -66,8 +65,9 @@ public class Client extends WebSocketClient {
     @Override
     public void onOpen(ServerHandshake handshakedata) {
         System.out.println("Подключен к серверу");
-        // Send the password immediately after connection
+        // Отправьте пароль сразу после подключения
         send("PASSWORD " + password);
+
     }
 
     @Override
@@ -101,17 +101,18 @@ public class Client extends WebSocketClient {
         ex.printStackTrace();
     }
 
-    private void receiveFile(String fileName) {
-        try {
-            byte[] fileContent = Base64.getDecoder().decode(fileName);
-            FileOutputStream fos = new FileOutputStream(new File("received_" + fileName));
-            fos.write(fileContent);
-            fos.close();
-            System.out.println("Полученный файл: " + fileName);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    private void receiveFile(String fileName) {
+//        try {
+//            byte[] fileContent = Base64.getDecoder().decode(fileName);
+//            FileOutputStream fos = new FileOutputStream(new File("received_" + fileName));
+//            fos.write(fileContent);
+//            fos.close();
+//            System.out.println("Полученный файл: " + fileName);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
 
     public static void main(String[] args) throws Exception {
         if (args.length != 2) {

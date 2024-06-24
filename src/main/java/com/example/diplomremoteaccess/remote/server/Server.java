@@ -1,5 +1,11 @@
 package com.example.diplomremoteaccess.remote.server;
 
+import com.example.diplomremoteaccess.controlller.AccessRequestController;
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
@@ -32,6 +38,17 @@ public class Server extends WebSocketServer {
         try {
             robot = new Robot();
             screenRect = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
+
+            // Получение разрешения основного экрана
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            GraphicsDevice[] screens = ge.getScreenDevices();
+            for (GraphicsDevice screen : screens) {
+                if (screen.getDefaultConfiguration().getBounds().contains(screenRect)) {
+                    screenRect = screen.getDefaultConfiguration().getBounds();
+                    break;
+                }
+            }
+
         } catch (AWTException e) {
             e.printStackTrace();
         }
@@ -121,6 +138,8 @@ public class Server extends WebSocketServer {
         System.out.println("Сервер успешно запущен");
     }
 
+
+
     private void startScreenCapture(WebSocket conn) {
         new Thread(() -> {
             while (conn.isOpen()) {
@@ -139,7 +158,6 @@ public class Server extends WebSocketServer {
         }).start();
     }
 
-
     private boolean validatePassword(String password) {
         Properties properties = new Properties();
         try (FileInputStream in = new FileInputStream(PROPERTIES_FILE)) {
@@ -153,37 +171,22 @@ public class Server extends WebSocketServer {
     }
 
     private void showConnectionRequestDialog(WebSocket conn) {
-        JFrame dialog = new JFrame("Запрос на подключение");
-        dialog.setSize(300, 200);
-        dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        dialog.setLayout(new BorderLayout());
+        Platform.runLater(() -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/diplomremoteaccess/AccessRequest.fxml"));
+                Parent root = loader.load();
 
-        JLabel label = new JLabel("Запрос на подключение от: " + conn.getRemoteSocketAddress().getAddress());
-        dialog.add(label, BorderLayout.CENTER);
+                AccessRequestController controller = loader.getController();
+                controller.setConnection(conn);
 
-        JPanel buttonPanel = new JPanel();
-        JButton acceptButton = new JButton("Принять");
-        JButton declineButton = new JButton("Отклонить");
-
-        acceptButton.addActionListener(e -> {
-            dialog.dispose();
-            conn.send("PASSWORD_OK");
-            startScreenCapture(conn);
+                Stage stage = new Stage();
+                stage.setTitle("Запрос на подключение");
+                stage.setScene(new Scene(root));
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
-
-        declineButton.addActionListener(e -> {
-            dialog.dispose();
-            conn.send("PASSWORD_FAIL");
-            conn.close();
-        });
-
-        buttonPanel.add(acceptButton);
-        buttonPanel.add(declineButton);
-
-        dialog.add(buttonPanel, BorderLayout.SOUTH);
-
-        dialog.setLocationRelativeTo(null);
-        dialog.setVisible(true);
     }
 
     //------------------------Отправка и получение файлов---------------------------------

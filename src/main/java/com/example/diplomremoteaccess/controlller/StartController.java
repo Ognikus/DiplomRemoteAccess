@@ -218,7 +218,7 @@ public class StartController {
 
         // Инициализировать клиент WebSocket
         try {
-            client = new WebSocketClient(new URI("ws://" + remoteComputerIP + ":8887")) {
+            client = new WebSocketClient(new URI("ws://" + remoteComputerIP + ":8888")) {
                 @Override
                 public void onOpen(ServerHandshake handshakedata) {
                     System.out.println("Подключен к серверу");
@@ -248,6 +248,7 @@ public class StartController {
                         }
                     }
                 }
+
 
                 @Override
                 public void onClose(int code, String reason, boolean remote) {
@@ -337,10 +338,10 @@ public class StartController {
     }
 
     private void startRemoteDesktop() {
-        frame = new JFrame("удаленный рабочий стол");
+        frame = new JFrame("Удалённый рабочий стол");
         imageLabel = new JLabel();
-        frame.add(imageLabel);
-        frame.setSize(1920, 1080);
+        frame.add(new JScrollPane(imageLabel));  // Используем JScrollPane для поддержки прокрутки
+        frame.setSize(1920, 1080);  // Устанавливаем размер окна
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setVisible(true);
 

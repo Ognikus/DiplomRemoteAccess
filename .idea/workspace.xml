@@ -4,18 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d51f03c6-d375-4945-b100-4481cc2394d8" name="Changes" comment="Корректно работает">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/controlller/FileTransferController.java" afterDir="false" />
+    <list default="true" id="d51f03c6-d375-4945-b100-4481cc2394d8" name="Changes" comment="Update 3">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/StartApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/StartApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/controlller/AccessRequestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/controlller/AccessRequestController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/controlller/StartController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/controlller/StartController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/remote/FileTransferApp.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/remote/client/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/remote/client/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/remote/client/FileTransferClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/remote/client/FileTransferClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/remote/server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/diplomremoteaccess/remote/server/Server.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/diplomremoteaccess/AccessRequest.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/diplomremoteaccess/AccessRequest.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/diplomremoteaccess/FileTransfer.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/diplomremoteaccess/FileTransfer.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/diplomremoteaccess/FileTransfer.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -161,7 +157,8 @@
       <workItem from="1718100760601" duration="615000" />
       <workItem from="1718112036086" duration="4142000" />
       <workItem from="1719060166226" duration="9286000" />
-      <workItem from="1719190435446" duration="2364000" />
+      <workItem from="1719190435446" duration="5267000" />
+      <workItem from="1719263686754" duration="6048000" />
     </task>
     <task id="LOCAL-00001" summary="Server and Client work">
       <option name="closed" value="true" />
@@ -211,7 +208,15 @@
       <option name="project" value="LOCAL" />
       <updated>1718100680479</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Update 3">
+      <option name="closed" value="true" />
+      <created>1719192867604</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1719192867604</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -235,7 +240,8 @@
     <MESSAGE value="Update new 2" />
     <MESSAGE value="Update" />
     <MESSAGE value="Корректно работает" />
-    <option name="LAST_COMMIT_MESSAGE" value="Корректно работает" />
+    <MESSAGE value="Update 3" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update 3" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

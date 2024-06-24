@@ -3,77 +3,89 @@ package com.example.diplomremoteaccess.controlller;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-
-import java.awt.event.ActionEvent;
+import org.java_websocket.WebSocket;
 
 public class AccessRequestController {
 
     @FXML
-    private Button clipboardPermission;
-
-    @FXML
-    private Button filesPermission;
-
-    @FXML
-    private Button keyboardPermission;
-
-    @FXML
-    private Button mousePermission;
-
-    @FXML
-    private ImageView profileImage;
-
+    private Label usernameLabel;
     @FXML
     private Label requestMessage;
-
+    @FXML
+    private Button keyboardPermission;
+    @FXML
+    private Button clipboardPermission;
+    @FXML
+    private Button mousePermission;
     @FXML
     private Button screenPermission;
-
     @FXML
-    private Label usernameLabel;
-
+    private Button filesPermission;
     @FXML
-    void handleAccept(ActionEvent event) {
+    private Button BtnAccept;
+    @FXML
+    private Button BtnCancel;
 
+    private WebSocket conn;
+    private boolean allowKeyboard = true;
+    private boolean allowClipboard = true;
+    private boolean allowMouse = true;
+    private boolean allowScreen = true;
+    private boolean allowFiles = true;
+
+    public void setConnection(WebSocket conn) {
+        this.conn = conn;
+        usernameLabel.setText("Запрос на подключение от: " + conn.getRemoteSocketAddress().getAddress());
     }
 
     @FXML
-    void handleCancel(ActionEvent event) {
+    private void initialize() {
+        keyboardPermission.setOnAction(event -> togglePermission(keyboardPermission, "keyboard"));
+        clipboardPermission.setOnAction(event -> togglePermission(clipboardPermission, "clipboard"));
+        mousePermission.setOnAction(event -> togglePermission(mousePermission, "mouse"));
+        screenPermission.setOnAction(event -> togglePermission(screenPermission, "screen"));
+        filesPermission.setOnAction(event -> togglePermission(filesPermission, "files"));
+        BtnAccept.setOnAction(event -> acceptConnection());
+        BtnCancel.setOnAction(event -> declineConnection());
+    }
 
+    private void togglePermission(Button button, String permission) {
+        boolean isEnabled;
+        switch (permission) {
+            case "keyboard":
+                isEnabled = allowKeyboard = !allowKeyboard;
+                break;
+            case "clipboard":
+                isEnabled = allowClipboard = !allowClipboard;
+                break;
+            case "mouse":
+                isEnabled = allowMouse = !allowMouse;
+                break;
+            case "screen":
+                isEnabled = allowScreen = !allowScreen;
+                break;
+            case "files":
+                isEnabled = allowFiles = !allowFiles;
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + permission);
+        }
+        button.setStyle(isEnabled ? "-fx-background-color: green;" : "-fx-background-color: red;");
     }
 
     @FXML
-    public void initialize() {
-        // Установить изображение ОС
-        profileImage.setImage(new Image("path/to/profile/image.png"));
-
-        // Установить начальные разрешения
-        keyboardPermission.setStyle("-fx-background-color: lightgray;");
-        clipboardPermission.setStyle("-fx-background-color: lightgray;");
-        mousePermission.setStyle("-fx-background-color: lightgray;");
-        screenPermission.setStyle("-fx-background-color: lightgray;");
-        filesPermission.setStyle("-fx-background-color: lightgray;");
+    private void acceptConnection() {
+        conn.send("PASSWORD_OK");
+        conn.send("PERMISSIONS " + allowKeyboard + " " + allowClipboard + " " + allowMouse + " " + allowScreen + " " + allowFiles);
     }
 
     @FXML
-    private void handleAccept() {
-        // Обработать действие "Принять"
-        System.out.println("Access accepted");
-        closeWindow();
-    }
-
-    @FXML
-    private void handleCancel() {
-        // Обработать действие отмены
-        System.out.println("Access canceled");
-        closeWindow();
-    }
-
-    private void closeWindow() {
-        Stage stage = (Stage) profileImage.getScene().getWindow();
+    private void declineConnection() {
+        conn.send("PASSWORD_FAIL");
+        conn.close();
+        // Закрываем только это окно
+        Stage stage = (Stage) BtnCancel.getScene().getWindow();
         stage.close();
     }
 }
